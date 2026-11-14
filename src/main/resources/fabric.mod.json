@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "penguin-suit",
+  "version": "${version}",
+  "name": "Penguin suit",
+  "license": "AGPL-3.0-only",
+  "description": "Minecraft 26.2 服务端 QQ 双向图文、提及、认证绑定与游戏事件互通。",
+  "environment": "server",
+  "entrypoints": {
+    "preLaunch": [
+      "dev.penguinsuit.HeadlessBootstrap"
+    ],
+    "main": [
+      "dev.penguinsuit.PenguinSuit"
+    ]
+  },
+  "mixins": [
+    "penguin-suit.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "26.2",
+    "java": ">=25",
+    "fabricloader": ">=0.19.3",
+    "fabric-api": ">=0.157.0",
+    "fabric-language-kotlin": ">=1.13.13+kotlin.2.4.10",
+    "mixinextras": ">=0.5.5",
+    "penguin-server-fabric": "1.1.7",
+    "chat-remastered": "=0.4.1+26.2"
+  },
+  "provides": [
+    "penguin-media-bridge"
+  ]
+}

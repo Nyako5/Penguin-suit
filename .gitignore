@@ -1,0 +1,49 @@
+# Generated builds, local test servers and release staging
+/.gradle/
+/build/
+/run/
+/logs/
+/crash-reports/
+/releases/
+/dist/
+
+# Downloaded upstream dependencies (keep Gradle Wrapper in version control)
+/libs/*.jar
+/libs/*.download
+
+# Local server configuration, identity records and media
+/config/
+/mods/
+/world/
+/world_nether/
+/world_the_end/
+/srvcashe/
+/server.properties
+/eula.txt
+/usercache.json
+/ops.json
+/whitelist.json
+/banned-players.json
+/banned-ips.json
+**/penguin-server.json
+**/penguin-server-state.json
+**/launch-spec.json
+.env
+.env.*
+!.env.example
+
+# IDE files and transient diagnostics
+.idea/
+.vscode/
+*.iml
+__pycache__/
+*.py[cod]
+*.log
+*.log.gz
+*.tmp
+*.bak
+*.download
+hs_err_pid*.log
+replay_pid*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,334 @@
+// Penguin suit 配置说明
+// 保存后执行 /penguinsuit reload 以重载
+
+{
+  // 总开关，开启后会覆盖原 Penguin Client 对应的转发设置
+  "enabled": true,
+
+  // QQ群转发至MC设置选项(图片及回复功能需借助Chat Remastered)
+  "QQtogame": {
+    "enabled": true,
+    // 是否转发文字
+    "text": true,
+    // 是否转发图片，关闭时图片提示为[图片]
+    "images": true,
+    // 是否将@从QQ群转发至MC
+    "mentions": true,
+    // 在QQ群内开启 Penguin Client 和 Penguin suit 的指令(后者主要用于身份绑定的认证)
+    "commands": true,
+    // 是否转发群事件至游戏(如入群申请、退群)
+    "groupEvents": true,
+    // 转发至MC中显示的消息格式，留空则使用 Penguin Client 的设置
+    "format": "<[QQ群] {name}> {message}",
+    // QQ内置表情的显示设置
+    "emoji": {
+      // 是否开启，关闭时仅显示emoji的名称，如[玫瑰]
+      "enabled": true,
+      // 转发的emoji类型
+      // ANIMATED：动画优先，无动画时使用静态图
+      // STATIC：静态图
+      // TEXT：仅文字
+      "mode": "ANIMATED"
+    },
+    // GIF转发设置
+    // ANIMATED：保留动画
+    // STATIC：仅转发首帧PNG
+    // TEXT：仅文字
+    "gifMode": "ANIMATED",
+    // 下载设置
+    "download": {
+      // 单图上限，默认8388608 Bytes，范围1024–33554432 Bytes
+      "maxDownloadBytes": 8388608,
+      // 连接限时，默认5000 ms，范围100–30000 ms
+      "connectTimeoutMillis": 5000,
+      // 下载总限时，默认15000 ms，范围100–60000 ms，无需大于上一项设置
+      "downloadTimeoutMillis": 15000,
+      // 跳转次数上限，范围0–5
+      "maxRedirects": 3,
+      // 允许下载的域名
+      "allowedHostSuffixes": [
+        "qq.com",
+        "qq.com.cn",
+        "qpic.cn"
+      ]
+    },
+    // 队列设置，处理线程数、队列容量 两项需重启服务器生效
+    "queue": {
+      // 处理线程数，范围1–4
+      "workerThreads": 2,
+      // 队列容量，范围1–256
+      "capacity": 32,
+      // 转发保护时长，默认120s，范围1–3600s，防止重复转发同一条消息
+      "dedupSeconds": 120,
+      // 单人转发间隔，默认1000 ms，范围0–60000 ms
+      "minSenderIntervalMillis": 1000,
+      // 群转发间隔，默认250 ms，范围0–60000 ms
+      "minGroupIntervalMillis": 250
+    }
+  },
+
+  // MC转发至QQ群设置选项
+  "gametoQQ": {
+    "enabled": true,
+    // 是否转发文字
+    "text": true,
+    // 是否转发图片，关闭时不转发图片消息及其正文
+    "images": true,
+    // 是否将@从MC转发至QQ群
+    "mentions": true,
+    // 转发至QQ群中显示的消息格式，留空则使用 Penguin Client 的设置
+    "format": "[MC] {name}：{message}",
+    // GIF转发设置
+    // ANIMATED：保留动画
+    // STATIC：仅转发首帧PNG
+    // TEXT：仅文字
+    "gifMode": "ANIMATED",
+    // 上传设置
+    "upload": {
+      // 队列容量，范围1–64
+      "queueCapacity": 16,
+      // 单图上限，默认8388608 Bytes，范围1024–20971520
+      "maxBytes": 8388608,
+      // 等待及处理中的图片总上限，默认33554432 Bytes，最大134217728 Bytes，需大于或等于上一项设置
+      "maxPendingBytes": 33554432,
+      // 任务存活时长(含排队及处理)，范围10–300s
+      "timeoutSeconds": 120
+    },
+    // 上传至QQ云端设置
+    "materialCache": {
+      // 数量上限，默认90，可选1–95
+      "maxImages": 90,
+      // 保留时间，默认1d，可选10–10080 min，后续发图时清理过期素材
+      "ttlMinutes": 1440,
+      // 转发保护时长，默认120s，可选0–600s，发送结果不明时至少保护10 min
+      "graceSeconds": 120
+    },
+    // 事件转发
+    "events": {
+      "enabled": true,
+      // 上线通知
+      "playerJoin": {
+        "enabled": true,
+        // 通知格式，留空则使用 Penguin Client 的设置
+        "format": ""
+      },
+      // 下线通知
+      "playerLeave": {
+        "enabled": true,
+        // 通知格式，留空则使用 Penguin Client 的设置
+        "format": ""
+      },
+      // 进度通知
+      "advancement": {
+        "enabled": true,
+        // 通知格式，可填写 {player}、{title}、{type}、{id}
+        "formats": {
+          // 普通进度
+          "TASK": "{player}取得了进度[{title}]",
+          // 目标
+          "GOAL": "{player}达成了目标[{title}]",
+          // 挑战
+          "CHALLENGE": "{player}完成了挑战[{title}]"
+        },
+        // TASK 普通进度
+        // GOAL 目标
+        // CHALLENGE 挑战
+        // 留空则不转发
+        "types": [
+          "TASK",
+          "GOAL",
+          "CHALLENGE"
+        ],
+        // 进度白名单，例如 minecraft:story/mine_stone
+        "allowedIds": [],
+        // 进度黑名单，优先于白名单
+        "excludedIds": [],
+        // 命名空间白名单，例如 minecraft
+        "allowedNamespaces": [],
+        // 命名空间黑名单，优先于白名单
+        "excludedNamespaces": []
+      },
+      // 玩家死亡通知
+      "death": {
+        "enabled": true,
+        // 可填写 {player}、{message}
+        "format": "{message}"
+      },
+      // 遵守队伍消息可见性规则
+      "respectGameRules": false,
+      // 使用26.2 中文资源，关闭则使用服务端文本，可使用翻译覆盖
+      "chinese": true,
+      // 队列容量，设置0 则与gametoQQ.upload.queueCapacity数值相同(队列独立)，可选1–256
+      "queueCapacity": 0,
+      // 任务存活时限，设置0 则与gametoQQ.upload.timeoutSeconds保持相同，可选1–600s
+      "timeoutSeconds": 0,
+      // 进度及死亡通知的最小转发间隔，默认0，可选0–60000 ms，0为不限制
+      "minIntervalMillis": 0,
+      // 自定义翻译，例如 "death.attack.fall": "%1$s 摔死了"
+      "translations": {}
+    }
+  },
+
+  // 双向共用的图片安全限制
+  "media": {
+    // 单条消息最多图片数，默认5，可选1–10
+    "maxImagesPerMessage": 5,
+    // 最大图片边长，默认4096，可选1–8192，超限则回退
+    "maxDimension": 4096,
+    // 单图最大像素，默认16777216 (4096*4096)，可选1–67108864
+    "maxPixels": 16777216,
+    // GIF 最大帧数，默认240，可选 1–500
+    "maxGifFrames": 240,
+    // GIF 累计解码像素预算，默认80000000，可选 1–200000000
+    "maxGifDecodedPixels": 80000000
+  },
+
+  // 本地缓存设置
+  "cache": {
+    // 大小上限；默认268435456 Bytes，最小为单图下载上限，最大2147483648 Bytes
+    "maxBytes": 268435456,
+    // 数量上限，默认256，可选1–2000
+    "maxImages": 256,
+    // 时间上限，默认1d，可选1–10080 min
+    "ttlMinutes": 1440,
+    // 转发保护期，默认120s，可选0–600s，处于保护期内的图片不会自动清理
+    "deliveryGraceSeconds": 120,
+    // 自动清理检查间隔，默认60s，可选5–3600s
+    "cleanupSeconds": 60
+  },
+
+  // @设置
+  "mentions": {
+    "enabled": true,
+    // 提示音开关
+    "soundEnabled": true,
+    "color": "aqua",
+    // 提示音ID
+    "sound": "minecraft:entity.experience_orb.pickup",
+    // 音量，范围 0–4
+    "volume": 2.0,
+    // 音调，范围 0.5–2
+    "pitch": 2.0,
+    // 普通聊天候选推送
+    "chatCompletions": true,
+    // 指令补全
+    "commandCompletions": true,
+    // 列表排序，可选 NAME / ONLINE_FIRST / BOUND_FIRST
+    "sort": "NAME",
+    // 已绑定成员的候选显示，可选 BOTH / MC / QQ
+    "boundAliases": "BOTH",
+    // 刷新间隔，默认1000 ms，可选250–60000 ms
+    "refreshMillis": 1000,
+    // 内容审核等待时长上限，默认30s，可选5–120s
+    "auditTimeoutSeconds": 30
+  },
+
+  // 回复设置
+  "replies": {
+    "enabled": true,
+    // 索引留存时间，默认7d，可选1–43200min
+    "retentionMinutes": 10080,
+    // 索引留存数量，默认20000条，可选100–100000条
+    "maxEntries": 20000,
+    // 索引留存字节；默认33554432 Bytes，可选1048576–134217728 Bytes
+    "maxBytes": 33554432
+  },
+
+  // 绑定设置
+  "authentication": {
+    "enabled": true,
+    // 时长上限，默认300s，可选60–1800s
+    "codeTtlSeconds": 300,
+    // 限频时长，默认60s，可选10–600s
+    "rateWindowSeconds": 60,
+    // 尝试次数上限，默认10次，可选1–30次
+    "maxAttempts": 10,
+    // 待完成认证数量上限，默认256，可选1-1024
+    "maxPending": 256
+  },
+
+  // 过滤设置
+  "filters": {
+    // 群过滤(GroupOpenID)
+    "blockedGroups": [],
+    // QQ群成员过滤(OpenID)
+    "blockedMembers": [],
+    // 机器人@及认证过滤(AppID/GroupOpenID/member_openid)
+    "excludedBots": [],
+    // 玩家UUID过滤
+    "blockedPlayerUUIDs": [],
+    // 玩家名称过滤
+    "blockedPlayerNames": [],
+    // 假人过滤
+    "fakePlayers": {
+      "enabled": true,
+      // 前缀过滤
+      "namePrefixes": [
+        "bot_"
+      ],
+      // 后缀过滤
+      "nameSuffixes": [
+        "_fake"
+      ],
+      // 完整名字过滤
+      "exactNames": [],
+      // UUID过滤
+      "excludedPlayerUUIDs": [],
+      // 匹配是否区分大小写
+      "caseSensitive": false,
+      // 假人过滤白名单(UUID)
+      "allowedPlayerUUIDs": []
+    }
+  },
+
+  // 成员目录设置
+  "directory": {
+    // 不活跃时间阈值，默认0，可选1-3650d，0为关闭清理
+    "inactiveRetentionDays": 0,
+    // 自动清理检查间隔，默认3600s，可选60–86400s
+    "cleanupIntervalSeconds": 3600
+  },
+
+  // QQ API设置
+  "network": {
+    // QQ API 网络请求。
+    "QQ": {
+      // 连接超时，默认10s，可选1-30s
+      "connectTimeoutSeconds": 10,
+      // 请求超时，默认30s，可选5–120s
+      "requestTimeoutSeconds": 30
+    }
+  },
+
+  // 通用提示文案
+  "messages": {
+    // @发送失败提示
+    "mentionFailure": "发送失败：{reason}",
+    // QQ转发MC失败提示
+    "incomingFailure": "转发失败：{reason}",
+    // 绑定提示
+    "authentication": "[绑定] {message}",
+    // 图片下载失败提示
+    "imageLoadFailure": "[图片下载失败]",
+    // 图片发送失败提示
+    "imageSendFailure": "[图片发送失败]",
+    // 图片部分缺失提示
+    "omittedImages": "[{count} 张图片未能加载]",
+    // MC转发QQ失败提示
+    "outgoingFailure": "转发失败：{message}",
+    // 图片发送者名称的备用格式
+    "mediaSenderFallback": "[QQ] {name}"
+  },
+
+  // 日志设置：DETAILED 输出详情，SUMMARY 只保留摘要
+  "logs": {
+    // 详细日志总开关，建议日常保持关闭，debug时再开启
+    "debugEnabled": false,
+    "media": "DETAILED",
+    "emoji": "DETAILED",
+    "mentions": "DETAILED",
+    "authentication": "DETAILED",
+    "events": "DETAILED",
+    "replies": true
+  }
+}

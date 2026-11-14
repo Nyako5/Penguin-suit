@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.penguinsuit.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "plugin": "dev.penguinsuit.mixin.BridgeMixinPlugin",
+  "mixins": ["PenguinSettingsMixin", "PenguinDirectionMixin", "PenguinForwardMixin", "QQMentionMixin", "ChatUploadMixin", "ChatReplyMixin", "QQClientAccess", "QQMemberMixin", "GameMentionMixin", "PenguinPlayerMixin", "PenguinBindingMixin", "AuthenticationMixin", "AdvancementEventMixin", "PlayerDeathEventMixin"],
+  "injectors": { "defaultRequire": 1 }
+}
