@@ -162,6 +162,6 @@ QQ → 游戏图片缓存默认上限为 **256 MiB、256 张、保留 24 小时*
 - [Errnick-code / Chat_Remastered_MC](https://github.com/Errnick-code/Chat_Remastered_MC)：图片、GIF 与回复的游戏内展示
 - [HuHoBot 文档](https://huhobot.txssb.cn/)：机器人及相关功能配置
 
-## 开源协议
+## 开源许可
 
-本项目采用 **AGPL-3.0-only** 协议，完整条款见 [LICENSE](LICENSE)。第三方组件保留各自的许可证。
+AGPL-3.0-only
