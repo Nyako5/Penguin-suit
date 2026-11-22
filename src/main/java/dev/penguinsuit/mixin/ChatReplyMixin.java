@@ -2,8 +2,8 @@ package dev.penguinsuit.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import dev.errnicraft.chatremastered.network.packet.ReplyMetaPacket;
-import dev.errnicraft.chatremastered.server.network.ReplyHandler;
+import dev.errnick.chatremastered.network.packet.ReplyMetaPacket;
+import dev.errnick.chatremastered.server.network.ReplyHandler;
 import dev.penguinsuit.PenguinSuit;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import org.spongepowered.asm.mixin.Mixin;

@@ -8,6 +8,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.penguinsuit.PenguinSuit;
 import dev.penguinsuit.bridge.MessageSnapshot;
 import dev.penguinsuit.bridge.QqMentions;
+import dev.penguinsuit.bridge.QqChatStyle;
+import dev.penguinsuit.reply.HiddenReplyId;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +24,7 @@ public abstract class PenguinForwardMixin {
             Function1<? super String, Unit> callback, Operation<Void> original, GroupMessage message) {
         if(!dev.penguinsuit.config.RuntimeSettings.incoming(message.getGroupId(),message.getUserId(),message.getAttachments()!=null&&!message.getAttachments().isEmpty()))return;
         // Decode before moderation/mention parsing. Keep trusted media metadata separate from text.
-        final var emojis=PenguinSuit.qqEmojis(value);
+        final var emojis=PenguinSuit.qqEmojis(HiddenReplyId.strip(value));
         value=emojis.text();
         var directory = PenguinSuit.mentions();
         if (directory != null && directory.isScope(message.getGroupId())) {
@@ -33,10 +35,12 @@ public abstract class PenguinForwardMixin {
                     var incoming = directory.incoming(message, raw);
                     String audited = incoming == null ? QqMentions.forAudit(message, raw) : incoming.auditText();
                     MessageSnapshot snapshot = captured.withMention(incoming).withEmojis(emojis.audit(audited));
-                    original.call(instance, audited, config, (Function1<String, Unit>) filtered -> {
+                    String visible = QqChatStyle.audit(audited);
+                    original.call(instance, visible, config, (Function1<String, Unit>) result -> {
+                        String filtered = QqChatStyle.afterAudit(audited, visible, result);
                         try {
                             if (incoming != null) incoming.rendered().auditText(filtered);
-                            if (!PenguinSuit.accept(snapshot, filtered, config, this)) callback.invoke(filtered);
+                            if (!PenguinSuit.accept(snapshot, filtered, config, this)) callback.invoke(filtered.indexOf('§')<0?filtered:QqChatStyle.wire(filtered));
                         } catch (dev.penguinsuit.mention.MemberDirectory.Invalid e) { directory.incomingFailure(snapshot,e.getMessage()); }
                         return Unit.INSTANCE;
                     });
@@ -48,11 +52,13 @@ public abstract class PenguinForwardMixin {
         value = QqMentions.forAudit(message, value);
         MessageSnapshot snapshot;
         try { snapshot = MessageSnapshot.capture(message).withEmojis(emojis.audit(value)); }
-        catch (RuntimeException e) { original.call(instance, value, config, callback); return; }
-        Function1<String, Unit> wrapped = filtered -> {
-            if (!PenguinSuit.accept(snapshot, filtered, config, this)) callback.invoke(filtered);
+        catch (RuntimeException e) { original.call(instance, QqChatStyle.audit(value), config, callback); return; }
+        final String styled = value, visible = QqChatStyle.audit(value);
+        Function1<String, Unit> wrapped = result -> {
+            String filtered = QqChatStyle.afterAudit(styled, visible, result);
+            if (!PenguinSuit.accept(snapshot, filtered, config, this)) callback.invoke(filtered.indexOf('§')<0?filtered:QqChatStyle.wire(filtered));
             return Unit.INSTANCE;
         };
-        original.call(instance, value, config, wrapped);
+        original.call(instance, visible, config, wrapped);
     }
 }

@@ -5,10 +5,10 @@ import com.huhobot.penguin.PenguinServerMod;
 import com.huhobot.penguin.config.PenguinConfig;
 import com.huhobot.penguin.filter.TextFilter;
 import com.huhobot.penguin.qq.QQClient;
-import dev.errnicraft.chatremastered.network.packet.*;
-import dev.errnicraft.chatremastered.server.ChatRemasteredState;
-import dev.errnicraft.chatremastered.server.tgbridge.*;
-import dev.errnicraft.chatremastered.tcp.ImageTcpServer;
+import dev.errnick.chatremastered.network.packet.*;
+import dev.errnick.chatremastered.server.ChatRemasteredState;
+import dev.errnick.chatremastered.server.tgbridge.*;
+import dev.errnick.chatremastered.tcp.ImageTcpServer;
 import dev.penguinsuit.PenguinSuit;
 import dev.penguinsuit.bridge.*;
 import dev.penguinsuit.config.BridgeConfig;
@@ -121,7 +121,7 @@ public final class ReplyService implements AutoCloseable {
     }
     public Component fallback(Inbound in,MessageSnapshot message,String suffix){
         MutableComponent body=Component.empty();if(in.reply())body.append(Component.literal("[回复 "+in.quote().sender()+"："+HiddenReplyId.bounded(in.quote().text(),100)+"] ").withStyle(ChatFormatting.GRAY));
-        body.append(MentionService.component(in.rendered())).append(suffix);
+        body.append(QqChatStyle.component(in.rendered())).append(suffix);
         return prefix(PenguinServerMod.INSTANCE.getConfig().getChatFromGroup(),message.name(),body);
     }
     private void sendReply(ServerPlayer player,String sender,Component senderComponent,String body,Quote quote,Component fallback){
@@ -137,9 +137,9 @@ public final class ReplyService implements AutoCloseable {
                 String suffix=message.media().isEmpty()?"":" [图片]";List<UUID> delivered=new ArrayList<>();
                 for(ServerPlayer p:recipients()){
                     if(in.reply())sendReply(p,in.entry().display(),Component.literal(in.entry().display()),
-                            HiddenReplyId.decorate(in.rendered().legacy()+suffix,in.entry().id()),in.quote(),fallback(in,message,suffix));
+                            HiddenReplyId.decorate(QqChatStyle.wire(in.rendered())+suffix,in.entry().id()),in.quote(),fallback(in,message,suffix));
                     else{
-                        Component body=MentionService.component(in.rendered()).copy().append(suffix);
+                        Component body=QqChatStyle.component(in.rendered()).copy().append(suffix);
                         if(replyCapable(p)&&in.entry().text().length()+suffix.length()+HiddenReplyId.LENGTH<=256)body=Component.literal(HiddenReplyId.encode(in.entry().id())).append(body);
                         p.sendSystemMessage(prefix(cfg.getChatFromGroup(),message.name(),body));
                     }
@@ -160,9 +160,9 @@ public final class ReplyService implements AutoCloseable {
         var resolved=ledger.resolveQq(scope,raw,this::quotedBotText,System.currentTimeMillis());
         ReplyLedger.Entry original=resolved.entry();
         var mention=message.mention()==null?null:mentions.revalidate(message.mention());
-        var rendered=mention==null?literal(HiddenReplyId.plain(text)):mention.rendered();
+        var rendered=mention==null?literal(HiddenReplyId.strip(text)):mention.rendered();
         rendered=autoMention(rendered,original,null,message.user());
-        if(rendered.plain().isBlank()&&!raw.reply()&&images.isEmpty()&&message.media().isEmpty())return null;
+        if(QqChatStyle.audit(rendered.plain()).isBlank()&&!raw.reply()&&images.isEmpty()&&message.media().isEmpty())return null;
         String display=MediaSenderFormat.format(PenguinServerMod.INSTANCE.getConfig().getChatFromGroup(),message.name());
         var entry=ledger.create(scope,new ReplyLedger.Author("QQ",null,message.user(),message.name()),display,rendered.plain(),
                 original==null?null:original.id(),images,message.id(),List.of(raw.currentReference()),System.currentTimeMillis());

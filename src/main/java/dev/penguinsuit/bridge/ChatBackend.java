@@ -1,9 +1,9 @@
 package dev.penguinsuit.bridge;
 
-import dev.errnicraft.chatremastered.network.packet.ImageChatPacket;
-import dev.errnicraft.chatremastered.network.packet.ImageDeletedPacket;
-import dev.errnicraft.chatremastered.server.ChatRemasteredState;
-import dev.errnicraft.chatremastered.tcp.ImageTcpServer;
+import dev.errnick.chatremastered.network.packet.ImageChatPacket;
+import dev.errnick.chatremastered.network.packet.ImageDeletedPacket;
+import dev.errnick.chatremastered.server.ChatRemasteredState;
+import dev.errnick.chatremastered.tcp.ImageTcpServer;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,7 +29,7 @@ public final class ChatBackend {
         sendImage(player,new ImageChatPacket(image.id(),sender,caption,image.width(),image.height(),
                 Component.literal(sender),quote.sender(),quote.text(),quote.image(),group,index,count));
     }
-    /** CR 0.4.1 encodes groupId with writeUtf(..., 40). Keep the complete random UUID at 37 chars. */
+    /** CR 0.5.1 encodes groupId with writeUtf(..., 40). Keep the complete random UUID at 37 chars. */
     public static String newGroupId(){return "pmbg_"+java.util.UUID.randomUUID().toString().replace("-","");}
     private static void sendImage(ServerPlayer player,ImageChatPacket packet){
         // Netty encodes asynchronously, too late for DeliveryRouter's fallback. Validate through the

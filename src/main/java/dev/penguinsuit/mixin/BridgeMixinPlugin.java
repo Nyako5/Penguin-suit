@@ -14,13 +14,13 @@ public final class BridgeMixinPlugin implements IMixinConfigPlugin {
     public static final String TARGET = "com.huhobot.penguin.command.CommandHandler";
     public static final String HANDLE = "(Lcom/huhobot/penguin/qq/GroupMessage;)V";
     public static final String AUDIT = "(Ljava/lang/String;Lcom/huhobot/penguin/config/PenguinConfig;Lkotlin/jvm/functions/Function1;)V";
-    public static final String UPLOAD = "dev.errnicraft.chatremastered.server.network.ImageUploadHandler";
+    public static final String UPLOAD = "dev.errnick.chatremastered.server.network.ImageUploadHandler";
     public static final String QQCLIENT = "com.huhobot.penguin.qq.QQClient";
     private boolean enabled;
     @Override public void onLoad(String mixinPackage) {
         var loader = FabricLoader.getInstance();
         enabled = version("minecraft", "26.2") && version("penguin-server-fabric", "1.1.7")
-                && version("chat-remastered", "0.4.1+26.2");
+                && version("chat-remastered", "0.5.1+26.2");
         if (enabled) {
             try {
                 var mod = loader.getModContainer("penguin-server-fabric").orElseThrow();
@@ -31,7 +31,7 @@ public final class BridgeMixinPlugin implements IMixinConfigPlugin {
                 byte[] qqBytes = java.nio.file.Files.readAllBytes(mod.findPath(QQCLIENT.replace('.', '/') + ".class").orElseThrow());
                 enabled = enabled && matchesUpload(java.nio.file.Files.readAllBytes(chat.findPath(UPLOAD.replace('.', '/') + ".class").orElseThrow()))
                         && matchesQueue(qqBytes) && matchesMentions(qqBytes) && matchesMemberEvents(qqBytes)
-                        && matchesReply(java.nio.file.Files.readAllBytes(chat.findPath("dev/errnicraft/chatremastered/server/network/ReplyHandler.class").orElseThrow()))
+                        && matchesReply(java.nio.file.Files.readAllBytes(chat.findPath("dev/errnick/chatremastered/server/network/ReplyHandler.class").orElseThrow()))
                         && matchesPlayerEvents(java.nio.file.Files.readAllBytes(mod.findPath("com/huhobot/penguin/PenguinServerMod.class").orElseThrow()))
                         && matchesSettings(java.nio.file.Files.readAllBytes(mod.findPath("com/huhobot/penguin/config/PenguinConfig.class").orElseThrow()));
             } catch (Exception e) { enabled = false; }
@@ -98,7 +98,7 @@ public final class BridgeMixinPlugin implements IMixinConfigPlugin {
     }
     public static boolean matchesReply(byte[] bytes){
         ClassNode node=new ClassNode();new ClassReader(bytes).accept(node,0);
-        return node.methods.stream().filter(m->m.name.equals("lambda$register$0")&&m.desc.equals("(Ldev/errnicraft/chatremastered/network/packet/ReplyMetaPacket;Lnet/fabricmc/fabric/api/networking/v1/ServerPlayNetworking$Context;)V")).count()==1;
+        return node.methods.stream().filter(m->m.name.equals("lambda$register$0")&&m.desc.equals("(Ldev/errnick/chatremastered/network/packet/ReplyMetaPacket;Lnet/fabricmc/fabric/api/networking/v1/ServerPlayNetworking$Context;)V")).count()==1;
     }
     public static boolean matchesMemberEvents(byte[] bytes) {
         ClassNode node=new ClassNode();new ClassReader(bytes).accept(node,0);

@@ -2,7 +2,7 @@
 
 Penguin suit 是一款用于连接 Minecraft 与 QQ 群的 Fabric 服务端 mod，基于 **PenguinClient-Fabric** 和 **Chat Remastered**，扩充了 **PenguinClient-Fabric** 的部分功能，提供双向图文转发、跨端 @、跨端消息回复和事件通知等服务。
 
-**这是一款服务端 mod，支持 Minecraft Java 版 26.2，当前版本：`0.9.3+26.2`，需要搭配 Chat Remastered 0.4.1+26.2 和 PenguinClient-Fabric v1.1.7 使用**
+**这是一款服务端 mod，支持 Minecraft Java 版 26.2，当前版本：`0.9.5+26.2`，需要搭配 Chat Remastered 0.5.1+26.2 和 PenguinClient-Fabric v1.1.7 使用**
 
 Penguin suit 通过运行时 Mixin 接入两个模组。客户端无需安装 Penguin suit 即可使用，但如果你希望在游戏中查看图片、播放 GIF、发送图片或使用回复界面，则需要安装匹配版本的 Chat Remastered
 
@@ -36,7 +36,7 @@ Penguin suit 通过运行时 Mixin 接入两个模组。客户端无需安装 Pe
 | Fabric API | 适用于 26.2 的 **0.157.0 或以上版本** |
 | Fabric Language Kotlin | **1.13.13+kotlin.2.4.10** |
 | PenguinClient-Fabric | **1.1.7 的 mc26.2 发布包** |
-| Chat Remastered | **0.4.1+26.2** |
+| Chat Remastered | **0.5.1+26.2** |
 | MixinExtras | **0.5.5**，已内置于 Penguin suit |
 
 ## 使用方法

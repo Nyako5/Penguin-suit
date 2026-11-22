@@ -2,7 +2,7 @@ package dev.penguinsuit.bridge;
 
 import com.huhobot.penguin.PenguinServerMod;
 import com.huhobot.penguin.config.PenguinConfig;
-import dev.errnicraft.chatremastered.tcp.ImageTcpServer;
+import dev.errnick.chatremastered.tcp.ImageTcpServer;
 import dev.penguinsuit.PenguinSuit;
 import dev.penguinsuit.config.BridgeConfig;
 import dev.penguinsuit.media.*;
@@ -58,7 +58,7 @@ public final class BridgeService implements AutoCloseable {
         if (resolution.images().isEmpty()) return false;
         if (!authorized(message, sourceConfig, sourceHandler)) return false;
         // This is the existing Penguin formatter, with the filtered content and frozen attachment metadata.
-        String fallback = PenguinServerMod.INSTANCE.formatGroupMessage(message.name(), message.filteredMessage(filtered));
+        String fallback = PenguinServerMod.INSTANCE.formatGroupMessage(message.name(), message.filteredMessage(QqChatStyle.wire(filtered)));
         String caption = bounded(AttachmentResolver.cleanCaption(filtered), 8192);
         String sender = MediaSenderFormat.format(sourceConfig.getChatFromGroup(), message.name());
         String key = message.id().isBlank() ? UUID.randomUUID().toString() : message.key();
@@ -154,7 +154,7 @@ public final class BridgeService implements AutoCloseable {
                 if (mentionService == null) throw new dev.penguinsuit.mention.MemberDirectory.Invalid("提及服务已关闭");
                 mention = mentionService.revalidate(mention);
                 fallback = mentionService.incomingComponent(message,mention,message.mediaFallbackSuffix()).getString();
-                caption = AttachmentResolver.cleanCaption(mention.rendered().legacy());
+                caption = AttachmentResolver.cleanCaption(QqChatStyle.wire(mention.rendered()));
             } catch (dev.penguinsuit.mention.MemberDirectory.Invalid e) {
                 if (mentionService != null) mentionService.incomingFailure(message,e.getMessage());
                 cleanup(ready); return;
@@ -171,12 +171,12 @@ public final class BridgeService implements AutoCloseable {
         }
         if(replyEnabled&&inbound==null){cleanup(ready);return;}
         if(inbound!=null){
-            String body=inbound.rendered().legacy();
-            String original=mention==null?dev.penguinsuit.reply.HiddenReplyId.plain(caption):mention.rendered().legacy();
+            String body=QqChatStyle.wire(inbound.rendered());
+            String original=mention==null?QqChatStyle.wire(caption):QqChatStyle.wire(mention.rendered());
             if(!mediaCaption.equals(caption)&&!original.isEmpty()&&body.endsWith(original))body=body.substring(0,body.length()-original.length())
-                    +(mention==null?dev.penguinsuit.reply.HiddenReplyId.plain(mediaCaption):mediaCaption);
+                    +(QqChatStyle.wire(mediaCaption));
             caption=dev.penguinsuit.reply.HiddenReplyId.decorate(body,inbound.entry().id());
-        }else caption=mediaCaption;
+        }else caption=QqChatStyle.wire(mediaCaption);
         final String fallbackLine=fallback;
         List<UUID> replyViewers=new ArrayList<>();
         List<DeliveryRouter.Recipient> recipients = new ArrayList<>();

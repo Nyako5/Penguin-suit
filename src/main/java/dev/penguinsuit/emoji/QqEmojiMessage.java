@@ -28,7 +28,7 @@ public final class QqEmojiMessage {
             if(successful.isEmpty())return current;
             var parts=rendered==null?List.of(new dev.penguinsuit.mention.MentionMessage.Part(sourceText,null,0)):rendered.parts();
             if(rendered==null&&!sourceText.equals(auditText))return current;
-            String original=rendered==null?sourceText:rendered.legacy();
+            String original=rendered==null?sourceText:dev.penguinsuit.bridge.QqChatStyle.wire(rendered);
             if(!dev.penguinsuit.media.AttachmentResolver.cleanCaption(original).equals(current))return current;
             List<dev.penguinsuit.mention.MentionMessage.Part> result=new ArrayList<>();
             for(var part:parts){
@@ -42,7 +42,7 @@ public final class QqEmojiMessage {
                 result.add(new dev.penguinsuit.mention.MentionMessage.Part(text.toString(),null));
             }
             var compact=new dev.penguinsuit.mention.MentionMessage.Rendered(result,Set.of(),Set.of(),Map.of());
-            return dev.penguinsuit.media.AttachmentResolver.cleanCaption(compact.legacy());
+            return dev.penguinsuit.media.AttachmentResolver.cleanCaption(dev.penguinsuit.bridge.QqChatStyle.wire(compact));
         }
     }
     public static Parsed untouched(String text){return new Parsed(text,List.of(),0,0,List.of());}

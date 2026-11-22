@@ -6,7 +6,7 @@ import dev.penguinsuit.bridge.BridgeService;
 import dev.penguinsuit.bridge.MessageSnapshot;
 import dev.penguinsuit.config.BridgeConfig;
 import dev.penguinsuit.reverse.ReverseBridge;
-import dev.errnicraft.chatremastered.server.ChatRemasteredState;
+import dev.errnick.chatremastered.server.ChatRemasteredState;
 import net.minecraft.server.MinecraftServer;
 import java.nio.file.Path;
 import net.fabricmc.api.ModInitializer;
@@ -53,7 +53,7 @@ public final class PenguinSuit implements ModInitializer {
                 gameEvents = new dev.penguinsuit.events.GameEventService(server, config,
                         stateDirectory);
                 state = "ready";
-                LOG.info("26.2 Penguin suit ready. Penguin 1.1.7 + Chat Remastered 0.4.1+26.2.");
+                LOG.info("26.2 Penguin suit ready. Penguin 1.1.7 + Chat Remastered 0.5.1+26.2.");
             } catch (Exception e) {
                 if (gameEvents != null) { gameEvents.close(); gameEvents = null; }
                 if(replies!=null){replies.close();replies=null;}
@@ -211,7 +211,7 @@ public final class PenguinSuit implements ModInitializer {
             if(config!=penguin.getConfig()||handler!=penguin.getCommandHandler()||!config.getChatPostChat()
                     ||!penguin.getState().isFullForwarding(message.group())
                     ||!dev.penguinsuit.config.RuntimeSettings.incoming(message.group(),message.user(),!message.media().isEmpty()))return;
-            String body=filtered+(message.media().isEmpty()?"":filtered.isBlank()?"[图片]":" [图片]");
+            String body=dev.penguinsuit.bridge.QqChatStyle.wire(filtered)+(message.media().isEmpty()?"":filtered.isBlank()?"[图片]":" [图片]");
             String line=penguin.formatGroupMessage(message.name(),message.filteredMessage(body));
             server.getPlayerList().broadcastSystemMessage(Component.literal(line),false);
         });

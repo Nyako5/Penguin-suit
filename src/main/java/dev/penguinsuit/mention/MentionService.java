@@ -5,9 +5,9 @@ import com.huhobot.penguin.PenguinServerMod;
 import com.huhobot.penguin.config.PenguinConfig;
 import com.huhobot.penguin.filter.TextFilter;
 import com.huhobot.penguin.qq.*;
-import dev.errnicraft.chatremastered.server.*;
-import dev.errnicraft.chatremastered.server.groups.*;
-import dev.errnicraft.chatremastered.server.moderation.ModerationActions;
+import dev.errnick.chatremastered.server.*;
+import dev.errnick.chatremastered.server.groups.*;
+import dev.errnick.chatremastered.server.moderation.ModerationActions;
 import dev.penguinsuit.PenguinSuit;
 import dev.penguinsuit.bridge.*;
 import dev.penguinsuit.config.BridgeConfig;
@@ -315,8 +315,8 @@ public final class MentionService implements AutoCloseable {
     public Component incomingComponent(MessageSnapshot message, Incoming incoming, String suffix){
         String template=PenguinServerMod.INSTANCE.getConfig().getChatFromGroup().replace("{name}",MemberDirectory.safeName(message.name()));
         int index=template.indexOf("{message}");
-        if(index<0)return Component.literal(template).append(component(incoming.rendered())).append(suffix);
-        return Component.literal(template.substring(0,index)).append(component(incoming.rendered()))
+        if(index<0)return Component.literal(template).append(dev.penguinsuit.bridge.QqChatStyle.component(incoming.rendered())).append(suffix);
+        return Component.literal(template.substring(0,index)).append(dev.penguinsuit.bridge.QqChatStyle.component(incoming.rendered()))
                 .append(template.substring(index+9)).append(suffix);
     }
     public void incomingText(MessageSnapshot message, PenguinConfig sourceConfig, Object sourceHandler){

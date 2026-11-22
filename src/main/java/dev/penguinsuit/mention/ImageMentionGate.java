@@ -2,9 +2,9 @@ package dev.penguinsuit.mention;
 
 import com.huhobot.penguin.PenguinServerMod;
 import com.huhobot.penguin.filter.TextFilter;
-import dev.errnicraft.chatremastered.network.packet.*;
-import dev.errnicraft.chatremastered.server.*;
-import dev.errnicraft.chatremastered.server.moderation.ModerationActions;
+import dev.errnick.chatremastered.network.packet.*;
+import dev.errnick.chatremastered.server.*;
+import dev.errnick.chatremastered.server.moderation.ModerationActions;
 import dev.penguinsuit.PenguinSuit;
 import java.util.*;
 import java.util.concurrent.*;
@@ -101,7 +101,7 @@ public final class ImageMentionGate {
             &&LuckPermsBridge.check(player.getUUID(),"chatremastered.photo.send",true);}
     private void reject(String key,Album album,ServerPlayer player,String reason){albums.remove(key);completed.put(key,System.currentTimeMillis());deny(Arrays.stream(album.slots).filter(Objects::nonNull).toList(),player,reason);}
     private void deny(List<Slot> slots,ServerPlayer player,String reason){
-        // CR 0.4.1 has no custom rejection reason; unknown ImageErrorPacket codes produce a misleading version warning.
+        // CR 0.5.1 has no custom rejection reason; unknown ImageErrorPacket codes produce a misleading version warning.
         service.failure(player,reason);
     }
     public ImagePlan plan(String id){return plans.get(id);}

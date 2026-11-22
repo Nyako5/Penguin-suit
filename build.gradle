@@ -24,8 +24,8 @@ dependencies {
     implementation 'net.fabricmc:fabric-loader:0.19.3'
     implementation 'net.fabricmc.fabric-api:fabric-api:0.157.0+26.2'
     implementation 'net.fabricmc:fabric-language-kotlin:1.13.13+kotlin.2.4.10'
-    compileOnly files('libs/penguin-server-fabric-1.1.7-mc26.2.jar', 'libs/chat-remastered-0.4.1-26.2.jar')
-    runtimeOnly files('libs/penguin-server-fabric-1.1.7-mc26.2.jar', 'libs/chat-remastered-0.4.1-26.2.jar')
+    compileOnly files('libs/penguin-server-fabric-1.1.7-mc26.2.jar', 'libs/chat-remastered-fabric-0.5.1+26.2.jar')
+    runtimeOnly files('libs/penguin-server-fabric-1.1.7-mc26.2.jar', 'libs/chat-remastered-fabric-0.5.1+26.2.jar')
     if (file('libs/cloth-config-26.2.155.jar').exists()) runtimeOnly files('libs/cloth-config-26.2.155.jar')
     include implementation('io.github.llamalad7:mixinextras-fabric:0.5.5')
     compileOnly 'net.fabricmc:sponge-mixin:0.17.4+mixin.0.8.7'
@@ -55,7 +55,7 @@ tasks.register('verifyUpstream') {
     doLast {
         def expected = [
             'penguin-server-fabric-1.1.7-mc26.2.jar': ['SHA-256', '00b425fff87bda7414722fc9f2e1a7816d4393c4f965f26cac76c0a045cf8088'],
-            'chat-remastered-0.4.1-26.2.jar': ['SHA-512', '6e11f8ddd30ed89665a77d1bdf54b12be96e89d8daa87bfb3f166919e55db61efed72d40714864fe301b5dbb8630441c9433714cfd0f0e82c26fef584fe8b178']
+            'chat-remastered-fabric-0.5.1+26.2.jar': ['SHA-512', '45151ce33a511ab9fd2f3209b6628088e323cf3142da861ce4d02e16f4a16747ddf9242e6e3fafec40a72cf73a20b6a6d3afd067b34c2ec6a33cc9ec2255d55a']
         ]
         expected.each { name, spec ->
             def f = file('libs/' + name)
